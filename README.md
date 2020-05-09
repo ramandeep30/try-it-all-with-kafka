@@ -10,6 +10,24 @@ This repository contains the implementation for:
 2. Kafka Byte Producer and Consumer
 3. Custom Serializer and Deserializer
 
+To run this application:
+
+a. Create a topic sample (configurable- application.conf)
+b. For Byte Data, run:
+> sbt 
+
+> runMain kafka.application.ByteDataApp
+
+For String Data, run:
+> sbt
+
+> runMain kafka.application.StringDataApp
+
+For Custom Data, run:
+> sbt
+
+> runMain kafka.application.UserDataApp
+
 
 ### To understand basics of Kafka, you can visit my blogs:
 1. Apache Kafka- What & Why? - https://ramandeep2017.wordpress.com/2020/04/21/apache-kafka-what-why-and-how/
