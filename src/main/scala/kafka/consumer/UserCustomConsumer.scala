@@ -1,13 +1,15 @@
 package kafka.consumer
 
+import java.time.Duration
 import java.util
 import java.util.Properties
-import scala.collection.JavaConverters._
 
+import scala.collection.JavaConverters._
 import com.typesafe.config.{Config, ConfigFactory}
+import model.User
 import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRecords, KafkaConsumer}
 
-object UserCustomConsumer extends App {
+class UserCustomConsumer {
 
   val config: Config = ConfigFactory.load()
   val brokers = config.getString("kafka.brokers")
@@ -24,13 +26,16 @@ object UserCustomConsumer extends App {
   properties.put("value.deserializer", "kafka.serde.UserDeserializer")
   properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
 
-  val consumer = new KafkaConsumer[String, String](properties)
+  val consumer = new KafkaConsumer[String, User](properties)
   consumer.subscribe(util.Collections.singletonList(topic))
 
-  while(true) {
-    val records: ConsumerRecords[String, String] = consumer.poll(30)
-    records.asScala.foreach { record =>
-      println(s"Received : ${record.value()} ::: At Partition : ${record.partition()} ::: At offset : ${record.offset()}")
+  def consume = {
+
+    while(true) {
+      val records: ConsumerRecords[String, User] = consumer.poll(Duration.ofMillis(30))
+      records.asScala.foreach { record =>
+        println(s"Received : ${record.value()} ::: At Partition : ${record.partition()} ::: At offset : ${record.offset()}")
+      }
     }
   }
 }

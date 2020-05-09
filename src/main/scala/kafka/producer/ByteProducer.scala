@@ -6,7 +6,7 @@ import com.typesafe.config.{Config, ConfigFactory}
 import model.Employee
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 
-object ByteProducer extends App {
+class ByteProducer {
 
   val config: Config = ConfigFactory.load()
 
@@ -39,12 +39,4 @@ object ByteProducer extends App {
     }
   }
 
-  val records = List(Employee("101", "Ramandeep", 500000, "Andrew"),
-    Employee("102", "Pam", 450000, "Micheal"),
-    Employee("103", "Angela", 550000, "Micheal"),
-    Employee("104", "Dwight", 500000, "Micheal"),
-    Employee("105", "Oscar", 700000, "Micheal")
-  )
-
-  send(records)
 }

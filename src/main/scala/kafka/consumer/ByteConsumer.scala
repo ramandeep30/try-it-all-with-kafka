@@ -1,13 +1,13 @@
 package kafka.consumer
 
+import java.time.Duration
 import java.util
 import java.util.Properties
 import scala.collection.JavaConverters._
+import com.typesafe.config.{Config, ConfigFactory}
+import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRecords, KafkaConsumer}
 
-import com.typesafe.config.{ Config, ConfigFactory }
-import org.apache.kafka.clients.consumer.{ ConsumerConfig, ConsumerRecords, KafkaConsumer}
-
-object ByteConsumer extends App {
+class ByteConsumer {
 
   val config: Config = ConfigFactory.load()
   val brokers = config.getString("kafka.brokers")
@@ -27,11 +27,12 @@ object ByteConsumer extends App {
   val consumer = new KafkaConsumer[String, Array[Byte]](properties)
   consumer.subscribe(util.Collections.singletonList(topic))
 
-  while(true) {
-    val records: ConsumerRecords[String, Array[Byte]] = consumer.poll(30)
-    records.asScala.foreach { record =>
-      println(s"Received : ${record.value()} ::: At Partition : ${record.partition()} ::: At offset : ${record.offset()}")
+  def consume() = {
+    while(true) {
+      val records: ConsumerRecords[String, Array[Byte]] = consumer.poll(Duration.ofMillis(30))
+      records.asScala.foreach { record =>
+        println(s"Received : ${record.value()} ::: At Partition : ${record.partition()} ::: At offset : ${record.offset()}")
+      }
     }
   }
-
 }
