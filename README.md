@@ -13,6 +13,7 @@ This repository contains the implementation for:
 To run this application:
 
 a. Create a topic sample (configurable- application.conf)
+
 b. For Byte Data, run:
 > sbt 
 
